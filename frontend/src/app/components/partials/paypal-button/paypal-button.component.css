@@ -1,0 +1,24 @@
+.khalti-button {
+    display: flex;
+    align-items: center;
+    background-color: #5a2d82; /* Khalti's brand color */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    width: 510px;
+  }
+  
+  .khalti-button:hover {
+    background-color: #4a246b; /* Darker shade for hover effect */
+  }
+  
+  .khalti-logo {
+    height: 24px;
+    width: auto;
+    margin-right: 10px;
+  }
+  

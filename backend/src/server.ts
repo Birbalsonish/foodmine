@@ -9,6 +9,8 @@ import foodRouter from './routers/food.router'
 import userRouter from './routers/user.router'
 import { dbConnect } from './configs/database.config';
 import orderRouter from './routers/order.router';
+import productRouter from './routers/product.router';
+
 
 dbConnect();
 
@@ -23,6 +25,8 @@ app.use(cors({
 app.use("/api/foods",foodRouter);
 app.use("/api/users",userRouter);
 app.use("/api/orders", orderRouter);
+app.use("/api/foods", productRouter);
+
 
 
 const port = 5000;

@@ -8,7 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 import { CartService } from '../../../services/cart.service';
 
 //window.paypal
-declare var paypal: any;
+declare var KhaltiCheckout: any;
 
 @Component({
   selector: 'paypal-button',
@@ -19,62 +19,50 @@ declare var paypal: any;
 })
 export class PaypalButtonComponent implements OnInit {
   @Input()
-  order!:Order;
+  order!: Order;
 
-  @ViewChild('paypal', {static: true})
-  paypalElement!:ElementRef;
-
-  
-  constructor(private orderService: OrderService,
+  constructor(
+    private orderService: OrderService,
     private cartService: CartService,
-    private router:Router,
-    private toastrService: ToastrService) { }
+    private router: Router,
+    private toastrService: ToastrService
+  ) {}
 
-  ngOnInit(): void {
-    const self = this;
-    paypal
-    .Buttons({
-      createOrder: (data: any, actions: any) => {
-        return actions.order.create({
-          purchase_units: [
-            {
-              amount: {
-                currency_code: 'NPR',
-                value: self.order.totalPrice,
-              },
-            },
-          ],
-        });
-      },
-  
-      onApprove: async (data: any, actions: any) => {
-        const payment = await actions.order.capture();
-        this.order.paymentId = payment.id;
-        self.orderService.pay(this.order).subscribe(
-          {
+  ngOnInit(): void {}
+
+  payWithKhalti() {
+    let config = {
+      publicKey: 'test_public_key_xxxx', // Replace with your Khalti Public Key
+      productIdentity: '1234567890',
+      productName: 'Test Product',
+      productUrl: 'http://localhost:4200/', // Change to your actual product URL
+      paymentPreference: ['KHALTI'],
+      eventHandler: {
+        onSuccess: (payload: any) => {
+          console.log(payload);
+          this.order.paymentId = payload.idx;
+          this.orderService.pay(this.order).subscribe({
             next: (orderId: string) => {
               this.cartService.clearCart();
               this.router.navigateByUrl('/track/' + orderId);
-              this.toastrService.success(
-                'Payment Saved Successfully',
-                'Success'
-              );
+              this.toastrService.success('Payment Saved Successfully', 'Success');
             },
             error: (error: any) => {
               this.toastrService.error('Payment Save Failed', 'Error');
-            }
-          }
-        );
+            },
+          });
+        },
+        onError: (error: any) => {
+          this.toastrService.error('Payment Failed', 'Error');
+          console.log(error);
+        },
+        onClose: () => {
+          console.log('Khalti payment widget closed');
+        },
       },
+    };
 
-      onError: (err: any) => {
-        this.toastrService.error('Payment Failed', 'Error');
-        console.log(err);
-      },
-    })
-    .render(this.paypalElement.nativeElement);
-
+    let checkout = new KhaltiCheckout(config);
+    checkout.show({ amount: this.order.totalPrice * 100 }); // Convert to paisa
   }
-  
 }
-

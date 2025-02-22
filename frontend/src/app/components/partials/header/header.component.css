@@ -1,11 +1,11 @@
 header{
     position: relative;
-    background: white;
+    background: #ee5353;
     padding: 0%;
-    border-bottom: 1px solid #e72929;
+    border-bottom: 1px solid white;
 }
 a{
-    color:#af1313;
+    color:rgb(7, 6, 6);
 }
 
 a:hover{
@@ -36,8 +36,8 @@ ul a{
     display:inline-block;
 }
 a span{
-    background: #ff4d4d;
-    color: white;
+    background: white;
+    color: #ff4d4d;
     padding: 0.1rem 0.45rem;
     border-radius: 100rem;
     font-size: 0.9rem;

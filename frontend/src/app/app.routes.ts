@@ -7,6 +7,8 @@ import { RegisterPageComponent } from './components/pages/register-page/register
 import { CheckoutPageComponent } from './components/pages/checkout-page/checkout-page.component';
 import { authGuard } from './auth/guards/auth.guard';
 import { PaymentPageComponent } from './components/pages/payment-page/payment-page.component';
+import { AdminComponent } from './components/admin/admin.component';
+import { adminGuard } from './auth/guards/adminguard.guard';
 
 export const routes: Routes = [
     {
@@ -43,4 +45,9 @@ export const routes: Routes = [
         component:PaymentPageComponent
         , canActivate:[authGuard]
     },
+    {
+        path: 'admin',
+        component: AdminComponent
+       , canActivate: [adminGuard] // Only admin users can access /admin
+      },
 ];

@@ -1,0 +1,12 @@
+<div class="admin-container">
+    <h2>Manage Foods</h2>
+  
+    <div *ngFor="let food of foods" class="food-item">
+      <input type="text" [(ngModel)]="food.name" placeholder="Food Name" />
+      <input type="number" [(ngModel)]="food.price" placeholder="Price" />
+      <button (click)="updateFood(food)">Update</button>
+    </div>
+  </div>
+  
+  
+  
